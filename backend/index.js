@@ -26,12 +26,11 @@ app.use(cors({
 
 // DataBase Connection
 
-try{
-     mongoose.connect(DB_URI);
+mongoose.connect(DB_URI).then(()=>{
     console.log("Connected To MongoDB");
-}catch(err){
+}).catch((err)=>{
     console.log(err);
-}
+});
 
 //Routes
 app.use("/todo",todoRoute);

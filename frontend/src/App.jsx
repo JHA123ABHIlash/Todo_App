@@ -5,18 +5,18 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Pagenotfound from './components/Pagenotfound'
 import {Toaster} from 'react-hot-toast';
+
 export default function App() {
-  const token=localStorage.getItem("jwt");
+  const token = localStorage.getItem("jwt");
   return (
-   <div>
+   <BrowserRouter>
     <Routes>
-      <Route path="/" element={token ? <Home/>: <Navigate to={"/login"}/>}/>
+      <Route path="/" element={token ? <Home/> : <Navigate to={"/login"}/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<Signup/>}/>
       <Route path="*" element={<Pagenotfound/>}/>
     </Routes>
     <Toaster/>
-    
-   </div>
+   </BrowserRouter>
   )
 }

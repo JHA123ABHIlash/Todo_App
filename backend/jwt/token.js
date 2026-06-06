@@ -6,10 +6,12 @@ const generateTokenAndSaveInCookies=async (userId,res)=>{
    const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
         expiresIn: "10d"
     });
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("jwt",token,{
         httpOnly:true,
-        secure:false,
-        sameSite:"lax",
+        secure:isProduction,
+        sameSite:isProduction ? "none" : "lax",
         path:'/'
     })
 

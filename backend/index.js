@@ -17,8 +17,10 @@ const DB_URI=process.env.mongo_url;
 //Middlewares
 app.use(express.json());
 app.use(cookieParser());
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://todo-app-1ojm.vercel.app";
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: FRONTEND_URL,
     credentials: true,
     methods: ["GET","POST","PUT","DELETE"],
     allowedHeaders: ["Content-Type","Authorization"]

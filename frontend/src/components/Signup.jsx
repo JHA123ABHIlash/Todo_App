@@ -1,7 +1,8 @@
-import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast';
+import api from '../api';
+
 export default function Signup() {
 
   const[username,setUsername]=useState("");
@@ -14,10 +15,9 @@ export default function Signup() {
     e.preventDefault();
     
     try{
-      const {data}=await axios.post("http://localhost:4002/user/signup",{
+      const {data}=await api.post('/user/signup',{
         username,email,password
       },{
-        withCredentials:true,
         headers:{
           "Content-Type":"application/json"
         }

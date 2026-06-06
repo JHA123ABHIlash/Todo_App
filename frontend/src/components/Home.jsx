@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from "axios"
+import api from '../api'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,8 +12,7 @@ export default function Home() {
 const fetchtodos=async ()=>{
             try{
             setLoading(true)
-            const response=await axios.get("http://localhost:4002/todo/fetch",{
-                withCredentials:true,
+            const response=await api.get('/todo/fetch',{
                 headers:{
                     "Content-Type":"application/json",
                 },
@@ -37,13 +36,10 @@ const fetchtodos=async ()=>{
     const todoCreate=async()=>{
         if(!newTodo) return;
         try{
-            const response=await axios.post("http://localhost:4002/todo/create",{
+            const response=await api.post('/todo/create',{
                 text:newTodo,
                 completed:false
-            },{
-                withCredentials:true
-            }
-            )
+            })
             setTodos([...todos,response.data.newTodo]);
             setNewTodo("");
             setError(null);
@@ -58,11 +54,9 @@ const todoStatus=async (id)=>{
     const todo=todos.find((t)=>t._id===id)
 
     try{
-        const response=await axios.put(`http://localhost:4002/todo/update/${id}`,{
+        const response=await api.put(`/todo/update/${id}`,{
             ...todo,
             completed:!todo.completed
-        },{
-            withCredentials:true
         })
         setTodos(todos.map((t)=>t._id===id? response.data.todo:t))
     }catch(err){
@@ -72,9 +66,7 @@ const todoStatus=async (id)=>{
 
 const todoDelete=async(id)=>{
     try{
-        await axios.delete(`http://localhost:4002/todo/delete/${id}`,{
-            withCredentials:true,
-        });
+        await api.delete(`/todo/delete/${id}`);
         setTodos(todos.filter((t)=>t._id !== id));
     }catch(err){
         setError("Failed to Delete Todo");
@@ -85,9 +77,7 @@ const navigateTo=useNavigate();
 
 const logout= async ()=>{
     try{
-        await axios.get("http://localhost:4002/user/logout",{
-            withCredentials:true,
-        })
+        await api.get('/user/logout')
         toast.success("User logged out successfully")
         localStorage.removeItem("jwt");
         navigateTo("/login");
